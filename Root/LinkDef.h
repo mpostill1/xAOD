@@ -11,7 +11,7 @@
 #include <xAODAnaHelpers/TruthSelector.h>
 #include <xAODAnaHelpers/TrackSelector.h>
 #include <xAODAnaHelpers/MuonSelector.h>
-
+#include <xAODAnaHelpers/SlidingWindow.h>
 /* Calibrations */
 #include <xAODAnaHelpers/ElectronCalibrator.h>
 #include <xAODAnaHelpers/PhotonCalibrator.h>

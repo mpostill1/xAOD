@@ -12,13 +12,11 @@ class ClusterHistsAlgo : public xAH::Algorithm
   // that way they can be set directly from CINT and python.
 public:
   std::string m_inContainerName = "";
-
   // configuration variables
   std::string m_detailStr = "";
 
 private:
   ClusterHists* m_plots = nullptr; //!
-
   // variables that don't get filled at submission time should be
   // protected from being send from the submission node to the worker
   // node (done by the //!)
@@ -44,7 +42,7 @@ public:
   // this is needed to distribute the algorithm to the workers
   ClassDef(ClusterHistsAlgo, 1);
   /// @endcond
-
+  
 };
 
 #endif

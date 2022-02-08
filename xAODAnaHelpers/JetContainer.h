@@ -220,7 +220,7 @@ namespace xAH {
       std::vector<float> *m_DL1r_pu;
       std::vector<float> *m_DL1r_pc;
       std::vector<float> *m_DL1r_pb;
- 
+
       // Jet Fitter
       std::vector<float>  *m_JetFitter_nVTX           ;
       std::vector<float>  *m_JetFitter_nSingleTracks  ;
@@ -508,7 +508,6 @@ namespace xAH {
       std::vector<char> *m_passSel;
     };
 }
-
 
 
 #endif // xAODAnaHelpers_JetContainer_H

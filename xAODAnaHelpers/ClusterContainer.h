@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <string>
-
+#include "xAODAnaHelpers/SlidingWindow.h"
 #include "xAODCaloEvent/CaloClusterContainer.h"
 
 #include <xAODAnaHelpers/HelperClasses.h>
