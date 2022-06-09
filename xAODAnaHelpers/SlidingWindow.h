@@ -11,16 +11,20 @@
 #include <string>
 #include <vector>
 
-#include "fastjet/PseudoJet.hh"
-
-
+#include "fastjet/PseudoJet.hh"            // FastJet EDM (Sect. 3.1, p. 11ff)
+//#include "xAODAnaHelpers/fastjet.h"
+#include "fastjet/ClusterSequenceArea.hh"  // clustering jet with area (p. 38ff)
+#include "fastjet/AreaDefinition.hh"       // area definition          (p. 38ff)
+#include "fastjet/JetDefinition.hh"        // jet definition           (p. 21ff)
+#include "xAODAnaHelpers/fastjetmp.h"
 
 namespace SlidingWindow
 {
-  std::vector<std::vector<double>> SlidingWindowExecute(const xAOD::JetContainer*  jetcont,const xAOD::CaloClusterContainer*  clustercont);
-  
+  std::vector<std::vector<double>> SlidingWindowExecute(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
+  std::vector<std::vector<double>> SlidingWindowExecutetopo(const xAOD::JetContainer*  jetcont,const xAOD::CaloClusterContainer*  clustercont);
   //std::vector<std::vector<double>> myReturnVector;
-
+  fastjet::ClusterSequenceArea cs(std::vector<fastjet::PseudoJet> cpjets,fastjet::JetDefinition jdef,fastjet::AreaDefinition adef);
+  //std::vector<fastjet::PseudoJet> cpjet;
   class Bin
   {
   public:
@@ -200,7 +204,9 @@ inline int SlidingWindow::Window::rootBinIndex(size_t index) const
 inline bool SlidingWindow::Window::isComplete(const fastjet::PseudoJet& jet) const
 { return jet.has_valid_cs() && jet.area() > 0.; } 
 inline double SlidingWindow::Window::rhoFromJet(const fastjet::PseudoJet& jet) const
-{ return this->isComplete(jet) ? jet.perp()/jet.area() : 0.; } 
+{std::cout << "Check on jet.perp() "<< jet.perp() <<std::endl; 
+  std::cout << "Check on jet.area() "<< jet.area() <<std::endl; 
+return this->isComplete(jet) ? jet.perp()/jet.area() : 0.;} 
 
 
 

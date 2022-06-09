@@ -15,14 +15,18 @@ class ClusterHists : public HistogramManager
   public:
     ClusterHists(std::string name, std::string detailStr );
     ~ClusterHists();
-
+    
     StatusCode initialize();
-    StatusCode execute( const xAOD::CaloClusterContainer* ccls, float eventWeight );
-    StatusCode execute( const xAOD::CaloCluster* ccl, float eventWeight );
+    //StatusCode execute( const xAOD::CaloClusterContainer* ccls, float eventWeight );
+    //StatusCode execute( const xAOD::CaloCluster* ccl, float eventWeight );
+    StatusCode execute(const xAOD::IParticleContainer* Ipars, float eventWeight );
+    StatusCode execute(const xAOD::IParticle* Ipar, float eventWeight );
     using HistogramManager::book; // make other overloaded versions of book() to show up in subclass
     using HistogramManager::execute; // overload
-    StatusCode RhoEtaHistFill(float eventweight, std::vector<std::vector<double>> RhoEtaEntries );
-    StatusCode RhoHistFill(float eventweight, std::vector<std::vector<double>> RhoEntries );
+    StatusCode RhoEtaHistFill_central(float eventweight, std::vector<std::vector<double>> RhoEtaEntries );
+    StatusCode RhoHistFill_central(float eventweight, std::vector<std::vector<double>> RhoEntries );
+    StatusCode RhoEtaHistFill_fwd(float eventweight, std::vector<std::vector<double>> RhoEtaEntries );
+    StatusCode RhoHistFill_fwd(float eventweight, std::vector<std::vector<double>> RhoEntries );
   protected:
     // bools to control which histograms are filled
     bool m_fillDebugging;        //!
@@ -33,11 +37,16 @@ class ClusterHists : public HistogramManager
     TH1F* m_ccl_e; //!
     TH1F* m_ccl_eta; //!
     TH1F* m_ccl_phi; //!
-    TH1F* m_ccl_rho; //!
+    TH1F* m_ccl_pt; //!
+    TH1F* m_ccl_rho_central; //!
+    TH1F* m_ccl_rho_fwd; //!
+    TH1F* m_ccl_rhoEM; //!
     TH2F* m_ccl_eta_vs_phi; //!
     TH2F* m_ccl_e_vs_eta; //!
     TH2F* m_ccl_e_vs_phi; //!
-    TH2F* m_ccl_eta_vs_rho; //!
+    TH2F* m_ccl_eta_vs_rho_central; //!
+    TH2F* m_ccl_eta_vs_rho_fwd; //!
+    TH2F* m_ccl_eta_vs_pt; //!
     
 };
 

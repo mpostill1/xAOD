@@ -228,7 +228,7 @@ std::vector<double> SlidingWindow::Window::findMedians()
 }
 
 double SlidingWindow::Window::median(data_t& values)                 //////////////////////
-{                                                                    // Sorts input data //
+{std::cout << "Check on call "<< values.size()<<std::endl;                                                                    // Sorts input data //
   if ( !values.empty() ) {                                           //////////////////////
     if ( values.size() == 1 ) { return values.front(); }
     std::sort(values.begin(),values.end());
@@ -238,8 +238,9 @@ double SlidingWindow::Window::median(data_t& values)                 ///////////
 }
 
 double SlidingWindow::Window::median(object_t& objects)              //////////////////////   
-{                                                                    // Sorts input data //
-  static _sortObjects _sorter;                                       //////////////////////                                                                   
+{                                                                     // Sorts input data //
+  static _sortObjects _sorter;                                       ////////////////////// 
+  std::cout << "Check on rho "<< rhoFromJet(objects.at(objects.size())) <<std::endl;
   if ( !objects.empty() ) {                                          
     if ( objects.size() == 1 ) { return this->rhoFromJet(objects.front()); }
     std::sort(objects.begin(),objects.end(),_sorter);
@@ -247,8 +248,46 @@ double SlidingWindow::Window::median(object_t& objects)              ///////////
     size_t n(objects.size());
     if ( n % 2 != 0 ) { 
       return this->rhoFromJet(objects.at((n-1)/2)); 
+      //std::cout << "Check on rho "<< rhoFromJet(objects.at(n)) <<std::endl;
     } else {
       return (this->rhoFromJet(objects.at((n-1)/2))+this->rhoFromJet(objects.at(n/2)))/2.;
     }
   } else { return 0.; }
 }
+
+
+//std::vector<double> SlidingWindow::Window::findrho()
+//{
+//data_t medians; medians.resize(m_collector.size(),0.);
+// if ( !m_storeObjects ) { 
+//  for ( size_t i(0); i<m_collector.size(); ++i ) { medians[i] = this->workoutrho(m_collector.at(i)); }
+// } else {
+//   for ( size_t i(0); i<m_objects.size(); ++i ) { medians[i] = this->workoutrho(m_objects.at(i)); }
+//}
+  // fill distribution if needed
+// if ( h_medianProfile->GetEntries() == 0 ) { 
+//   for ( auto bin : m_bins ) { 
+//    h_medianProfile->Fill(bin.binCenter(),workoutrho.at(this->binIndex(bin.binCenter())));
+//   } 
+// }
+
+// return medians;
+//}
+
+
+
+//double SlidingWindow::Window::workoutrho(object_t& objects)              //////////////////////   
+//{                                                                    // Sorts input data //
+// static _sortObjects _sorter;                                       //////////////////////                                                                   
+// if ( !objects.empty() ) {                                          
+//  if ( objects.size() == 1 ) { return this->rhoFromJet(objects.front()); }
+//  std::sort(objects.begin(),objects.end(),_sorter);
+//  if ( this->rhoFromJet(objects.front()) >= this->rhoFromJet(objects.back()) ) { printf("SlidingWindow::Window::median() WARNING BUG wrong sort order"); }
+//  size_t n(objects.size());
+///  if ( n % 2 != 0 ) { 
+//   return this->rhoFromJet(objects); 
+//  } else {
+//    return (this->rhoFromJet(objects);
+//  }
+//} else { return 0.; }
+//}

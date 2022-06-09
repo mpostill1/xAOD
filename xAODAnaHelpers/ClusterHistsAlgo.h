@@ -14,7 +14,8 @@ public:
   std::string m_inContainerName = "";
   // configuration variables
   std::string m_detailStr = "";
-
+  //xAOD::IParticleContainer central_combined(nullptr); 
+  //std::unique_ptr<DataVector<xAOD::IParticle> central_combined;
 private:
   ClusterHists* m_plots = nullptr; //!
   // variables that don't get filled at submission time should be

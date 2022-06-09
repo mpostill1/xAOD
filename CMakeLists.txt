@@ -5,6 +5,12 @@
 # Declare the package name:
 atlas_subdir( xAODAnaHelpers )
 
+# External dependencies.
+find_package( FastJet )
+find_package( FastJetContrib COMPONENTS SoftKiller ConstituentSubtractor )
+find_package( ROOT COMPONENTS Core MathCore )
+#end of added lines
+
 set( release_libs xAODTriggerCnvLib )
 
 if( AnalysisBase_VERSION AND AnalysisBase_VERSION VERSION_GREATER 21.0 )
