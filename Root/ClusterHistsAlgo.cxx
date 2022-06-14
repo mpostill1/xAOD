@@ -179,6 +179,7 @@ EL::StatusCode ClusterHistsAlgo :: execute ()
   ANA_CHECK(m_plots->RhoEtaHistFill_central(eventWeight, vec_central) ) ;
   ANA_CHECK(m_plots->RhoHistFill_fwd(eventWeight, vec_forward) ) ;
   ANA_CHECK(m_plots->RhoEtaHistFill_fwd(eventWeight, vec_forward) ) ;
+  ANA_CHECK(m_plots->RhoEtaHistFill_combined(eventWeight,vec_central ,vec_forward) ) ;
   //ANA_CHECK(m_plots->RhoHistFill(eventWeight, vec_combined) ) ;
   //ANA_CHECK(m_plots->RhoEtaHistFill(eventWeight, vec_combined) ) ;
 

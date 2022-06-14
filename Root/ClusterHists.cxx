@@ -31,13 +31,28 @@ StatusCode ClusterHists::initialize() {
   m_ccl_eta_vs_pt  = book(m_name, "eta_vs_pt", "cluster #eta", 80, -5, 5, "cluster pt ", 100, 0,1000);
   m_ccl_eta_vs_rho_central = book(m_name, "eta_vs_rho_central", "cluster #eta", 80, -5, 5, "cluster #rho_{median} (GeV/Area) ", 50, 0,70000);
   m_ccl_eta_vs_rho_fwd = book(m_name, "eta_vs_rho_fwd", "cluster #eta", 80, -5, 5, "topo #rho_{median} (GeV/Area) ", 50, 0,70000);
+  m_ccl_eta_vs_rho_combined = book(m_name, "eta_vs_rho_combined", "cluster #eta", 80, -5, 5, "#rho_{median} (GeV/Area) ", 50, 0,70000);
   //m_ccl_eta_vs_jet = book((m_name, "eta_vs_njets", "cluster #eta", 80, -5, 5,m_name,"njets",100,0,1000)
   // if worker is passed to the class add histograms to the output
 
   return StatusCode::SUCCESS;
   
 }
- 
+StatusCode ClusterHists::RhoEtaHistFill_combined(float eventweight,std::vector<std::vector<double>> RhoEtaEntrycentral,std::vector<std::vector<double>> RhoEtaEntryfwd)
+  {
+    for (std::vector<double>Entry: RhoEtaEntrycentral)
+      {
+	if (std::abs(Entry[0])<2.5) {m_ccl_eta_vs_rho_combined->Fill(Entry[0],Entry[1]);} 
+      } 
+      for (std::vector<double>Entry: RhoEtaEntryfwd)
+      {
+	if (std::abs(Entry[0])>2.5) {m_ccl_eta_vs_rho_combined->Fill(Entry[0],Entry[1]);} 
+      } 
+    //since we have to return a StatusCode, return the obvious one (SUCCESS)
+    return StatusCode::SUCCESS;
+  }
+
+
 StatusCode ClusterHists::RhoEtaHistFill_central(float eventweight,std::vector<std::vector<double>> RhoEtaEntries)
   {
     for (std::vector<double>Entry: RhoEtaEntries)

@@ -27,6 +27,7 @@ class ClusterHists : public HistogramManager
     StatusCode RhoHistFill_central(float eventweight, std::vector<std::vector<double>> RhoEntries );
     StatusCode RhoEtaHistFill_fwd(float eventweight, std::vector<std::vector<double>> RhoEtaEntries );
     StatusCode RhoHistFill_fwd(float eventweight, std::vector<std::vector<double>> RhoEntries );
+    StatusCode RhoEtaHistFill_combined(float eventweight,std::vector<std::vector<double>> RhoEtaEntrycentral,std::vector<std::vector<double>> RhoEtaEntryfwd);
   protected:
     // bools to control which histograms are filled
     bool m_fillDebugging;        //!
@@ -47,6 +48,7 @@ class ClusterHists : public HistogramManager
     TH2F* m_ccl_eta_vs_rho_central; //!
     TH2F* m_ccl_eta_vs_rho_fwd; //!
     TH2F* m_ccl_eta_vs_pt; //!
+    TH2F* m_ccl_eta_vs_rho_combined; //!
     
 };
 
