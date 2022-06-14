@@ -16,7 +16,7 @@
 #include <iostream>
 // this is needed to distribute the algorithm to the workers
 ClassImp(ClusterHistsAlgo)
-
+//testing 12
 ClusterHistsAlgo :: ClusterHistsAlgo () :
     Algorithm("ClusterHistsAlgo")
 {
