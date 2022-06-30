@@ -81,7 +81,7 @@ namespace SlidingWindow
     {
       if ( m_isDead ) return false;
       // find central bin and distribute
-      fastjet::PseudoJet fj(fastjet::PtYPhiM(obj.pt(),obj.phi(),obj.m()));
+      fastjet::PseudoJet fj(fastjet::PtYPhiM(obj.pt(),obj.eta(),obj.phi(),obj.m()));
       return integrate(fj,area);
     }//obj.p4().Rap()
 
