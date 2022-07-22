@@ -13,7 +13,7 @@
 #include "fastjet/AreaDefinition.hh"       // area definition          (p. 38ff)
 #include "fastjet/JetDefinition.hh"        // jet definition           (p. 21ff)
 #include "xAODAnaHelpers/fastjetmp.h"
-std::vector<std::vector<double>> SlidingWindow::SlidingWindowExecute(const xAOD::JetContainer* jetcont, const xAOD::IParticleContainer* Iparcont){
+std::vector<std::vector<double>> SlidingWindow::SlidingWindowExecuteBoth(const xAOD::JetContainer* jetcont, const xAOD::IParticleContainer* Iparcont){
 
 
 //define variables
@@ -24,7 +24,14 @@ float pTower;
 
  SlidingWindow::Window etaWindows("MyTowerIntegrator Central",98,-4.9,4.9,0.8);
 
-
+//Loop on the towers and fill the etaWindows object with the towers like
+ double ftarea(0.1*0.1);
+ double rapmax(2.5);
+ //double area = 0.1*0.1;          // assuming 0.1 x 0.1 tower grid
+ // for (const xAOD::CaloCluster* pTower :*clustercont) {
+ //if ( pTower->e() > 0. ) { etaWindows.addObject(*pTower,area); }
+ //}
+//Plot 
 //Loop on the towers and fill the etaWindows object with the towers like
 /////////NEW CODE/////////////
 //////////////////////////////
@@ -33,7 +40,7 @@ float pTower;
  fastjet::ClusterSequenceArea cs = getJetsWithAreas(intialjets);
  std::vector<fastjet::PseudoJet> jets = cs.inclusive_jets();
  std::vector<fastjet::PseudoJet> cpjet = getConstituentsWithAreas(*Iparcont,cs,jets);
- double rapmax(2.5);
+
  for ( const auto& cpj : cpjet ) { 
    if ( std::abs(cpj.rap()) < rapmax ) {
      const xAOD::IParticle* cpc = getLinkedObj<xAOD::IParticle>(cpj); 
@@ -50,6 +57,12 @@ float pTower;
       //if ( pTower->e() > 0. ) { etaWindows.addObject(*pTower,area); }
    }
  }
+
+ for ( const auto* cft : *Iparcont) { 
+   //std::cout << "Check on cft "<< cft->pt(xAOD::CaloCluster::UNCALIBRATED) <<std::endl;
+   //std::cout << "Check on eta "<< cft->eta() <<std::endl;
+   if ( cft->e() > 0. ) { etaWindows.addObject(*cft,ftarea); }
+     }
   
 
 
@@ -98,8 +111,7 @@ float pTower;
    double eta=pJet->eta();
    double rho(medianpostill.at(etaWindows.binIndex(pJet->eta())));
    std::vector<double> myEntryVec; // this object will be assigned to something in scope (our return vector) so will be saved from deletion
-   myEntryVec.clear();
-   if(std::fabs(eta)<2.5) {   
+   myEntryVec.clear();   
 
    //clear this vector if there's some junk in memory
   
@@ -109,7 +121,6 @@ float pTower;
    myEntryVec.push_back(rho);
    //now push the entry vector to the return. Now the object in memory is assigned to the ReturnVector which now exists outside of the for loop.
    myReturnVector.push_back(myEntryVec);
-   }
  };
 
  // check everything reads out:
@@ -125,7 +136,6 @@ float pTower;
 
 
 }
-
 
 
 

@@ -47,7 +47,7 @@ template<class OBJTYPE> const OBJTYPE* getLinkedObj(const fastjet::PseudoJet& cj
   // check object type at return
   const OBJTYPE*  myobject = cjet.has_user_info<OBJTYPE>() ? &cjet.user_info<OBJTYPE>() :  nullptr;
 // check if nullptr
-  std::cout << "Check on if cpc is a null pointer on not number 2 electric bugalo, is this a null pointer? 1 yes, 0 no  "<< (myobject==nullptr) <<std::endl; 
+  //std::cout << "Check on if cpc is a null pointer on not number 2 electric bugalo, is this a null pointer? 1 yes, 0 no  "<< (myobject==nullptr) <<std::endl; 
   return myobject;
   //return cjet.has_user_info<OBJTYPE>() ? &cjet.user_info<OBJTYPE>() :  nullptr;
 }

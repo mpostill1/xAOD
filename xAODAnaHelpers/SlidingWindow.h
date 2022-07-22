@@ -22,6 +22,7 @@ namespace SlidingWindow
 {
   std::vector<std::vector<double>> SlidingWindowExecute(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
   std::vector<std::vector<double>> SlidingWindowExecutetopo(const xAOD::JetContainer*  jetcont,const xAOD::CaloClusterContainer*  clustercont);
+  std::vector<std::vector<double>> SlidingWindowExecuteBoth(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
   //std::vector<std::vector<double>> myReturnVector;
   fastjet::ClusterSequenceArea cs(std::vector<fastjet::PseudoJet> cpjets,fastjet::JetDefinition jdef,fastjet::AreaDefinition adef);
   //std::vector<fastjet::PseudoJet> cpjet;
@@ -81,7 +82,7 @@ namespace SlidingWindow
     {
       if ( m_isDead ) return false;
       // find central bin and distribute
-      fastjet::PseudoJet fj(fastjet::PtYPhiM(obj.pt(),obj.phi(),obj.m()));
+      fastjet::PseudoJet fj(fastjet::PtYPhiM(obj.pt(),obj.eta(),obj.phi(),obj.m()));
       return integrate(fj,area);
     }//obj.p4().Rap()
 

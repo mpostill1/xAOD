@@ -27,6 +27,8 @@ float pTower;
  //if ( pTower->e() > 0. ) { etaWindows.addObject(*pTower,area); }
  //}
 for ( const auto* cft : *clustercont ) { 
+  std::cout << "Check on cft "<< cft->pt(xAOD::CaloCluster::UNCALIBRATED) <<std::endl;
+  std::cout << "Check on eta "<< cft->eta() <<std::endl;
     if ( cft->e(xAOD::CaloCluster::UNCALIBRATED) > 0. ) { etaWindows.addObject(*cft,ftarea); }
  }
 //Plot $\rho(\eta)$ by retrieving the median values:
@@ -38,7 +40,7 @@ for ( const auto* cft : *clustercont ) {
    double rho(medians.at(etaWindows.binIndex(eta)));
     // ... plot ...
  }
-	      
+
 //FInd local $\rho$ for jets
 
  std::vector<double> medianpostill(etaWindows.findMedians());
@@ -46,16 +48,16 @@ for ( const auto* cft : *clustercont ) {
    double rho(medianpostill.at(etaWindows.binIndex(pJet->eta())));
    double ptcorr=0;
    double jet_pt=pJet->pt();
-   std::cout << "Check on pjet "<< pJet <<std::endl;
+   std::cout << "Check on pjet "<< pJet->pt() <<std::endl;
    std::cout << "Check on pjet eta "<< pJet->eta() <<std::endl;
-   std::cout << "Check on etaWindows.binIndex(pJet->eta()) "<< etaWindows.binIndex(pJet->eta()) <<std::endl;
-   std::cout << "Check on medianpostill.at(etaWindows.binIndex(pJet->eta()))) "<< medianpostill.at(etaWindows.binIndex(pJet->eta())) <<std::endl;
+   //std::cout << "Check on etaWindows.binIndex(pJet->eta()) "<< etaWindows.binIndex(pJet->eta()) <<std::endl;
+   //std::cout << "Check on medianpostill.at(etaWindows.binIndex(pJet->eta()))) "<< medianpostill.at(etaWindows.binIndex(pJet->eta())) <<std::endl;
    double active_area=pJet->getAttribute<double>("ActiveArea");
    ptcorr=jet_pt-rho*active_area;
    std::cout <<"event density="<<rho<<std::endl;
     // ... keep/remove jet etc. ...
-  }
-
+   //  }
+ }
 
 //clear this vector if there's some junk in memory
   // final vector to return - this and anything associated to it won't be deleted!

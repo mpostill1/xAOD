@@ -14,6 +14,7 @@
 #include <xAODJet/JetContainer.h>
 #include <xAODCore/AuxContainerBase.h>
 #include <iostream>
+#include "xAODBase/IParticle.h"
 // this is needed to distribute the algorithm to the workers
 ClassImp(ClusterHistsAlgo)
 //testing 12
@@ -128,7 +129,7 @@ EL::StatusCode ClusterHistsAlgo :: execute ()
 
 
 
-
+  //netural and charged flow jets container
 
    // Retrieve input jet container
   const xAOD::FlowElementContainer* CFE_container=nullptr;
@@ -158,10 +159,43 @@ EL::StatusCode ClusterHistsAlgo :: execute ()
     *NFE = *NFE_Element; // copies auxdata from one auxstore to the other
   }
   
+ 
+
+  // forward and central combined container 
+
+  // Create the new container and its auxiliary store.
+  //const xAOD::IParticleContainer* central_combined=nullptr;
+  auto central_fwd_combined = std::make_unique<xAOD::IParticleContainer>();
+  auto central_fwd_combinedAux = std::make_unique<xAOD::AuxContainerBase>();
+  //const xAOD::AuxContainerBase central_combinedAux=nullptr;
+  //std::unique_ptr<const xAOD::AuxContainerBase> central_combinedAux= std::make_unique<xAOD::AuxContainerBase>();
+    central_fwd_combined->setStore (central_fwd_combinedAux.get()); //< Connect the two
+  for (const xAOD::FlowElement* CFE_Element : *CFE_container) {
+    // Copy this CFE to the output container:
+    xAOD::FlowElement* CFE = new xAOD::FlowElement();
+    central_fwd_combined->push_back(CFE); // CFE acquires the central_combined auxstore
+    *CFE=*CFE_Element; // copies auxdata from one auxstore to the other
+  }
   
-  std::cout << "works up to this point";
+  for (const xAOD::FlowElement* NFE_Element : *NFE_container) {
+    // Copy this NFE to the output container:
+    xAOD::FlowElement* NFE= new xAOD::FlowElement();
+    central_fwd_combined->push_back(NFE); // jet acquires the goodJets auxstore
+    *NFE = *NFE_Element; // copies auxdata from one auxstore to the other
+  }
+  for (const xAOD::CaloCluster* tower_Element : *Fwd) {
+    // Copy this CFE to the output container:
+    xAOD::CaloCluster* tower = new xAOD::CaloCluster();
+    central_fwd_combined->push_back(tower); // CFE acquires the central_combined auxstore
+    *tower=*tower_Element; // copies auxdata from one auxstore to the other
+  }
+
+
+
+
 
   ANA_CHECK( m_plots->execute( central_combined.get(), eventWeight ));
+  ANA_CHECK( m_plots->execute( central_fwd_combined.get(), eventWeight ));
   const xAOD::JetContainer* AntiKt4EMPFlowJets(nullptr);
   ANA_CHECK(HelperFunctions::retrieve(AntiKt4EMPFlowJets,"AntiKt4EMPFlowJets",m_event,m_store, msg() ) );
   //ANA_CHECK( m_plots->execute( AntiKt4EMPFlowJets, eventWeight ));
@@ -171,15 +205,17 @@ EL::StatusCode ClusterHistsAlgo :: execute ()
   //Combined_Container= central_combined+Fwd
   std::vector<std::vector<double>> vec_central=SlidingWindow::SlidingWindowExecute(AntiKt4EMPFlowJets, central_combined.get());
   std::vector<std::vector<double>> vec_forward=SlidingWindow::SlidingWindowExecutetopo(AntiKt4EMPFlowJets, Fwd);
+  std::vector<std::vector<double>> vec_combined=SlidingWindow::SlidingWindowExecuteBoth(AntiKt4EMPFlowJets,central_fwd_combined.get());
   //std::vector<std::vector<double>> vec_forward=SlidingWindow::SlidingWindowExecutetCombined(AntiKt4EMPFlowJets, Combined_Container);
   //std::vector<std::vector<double>> vec_combined=SlidingWindow::SlidingWindowExecuteFill(AntiKt4EMPFlowJets, CMB);
   //ANA_CHECK( m_plots->execute(SlidingWindow::myReturnVector, eventWeight));
   //return EL::StatusCode::SUCCESS;
-  ANA_CHECK(m_plots->RhoHistFill_central(eventWeight, vec_central) ) ;
-  ANA_CHECK(m_plots->RhoEtaHistFill_central(eventWeight, vec_central) ) ;
-  ANA_CHECK(m_plots->RhoHistFill_fwd(eventWeight, vec_forward) ) ;
-  ANA_CHECK(m_plots->RhoEtaHistFill_fwd(eventWeight, vec_forward) ) ;
-  ANA_CHECK(m_plots->RhoEtaHistFill_combined(eventWeight,vec_central ,vec_forward) ) ;
+  ANA_CHECK(m_plots->RhoHistFill_central(eventWeight, vec_central) );
+  ANA_CHECK(m_plots->RhoEtaHistFill_central(eventWeight, vec_central) );
+  ANA_CHECK(m_plots->RhoHistFill_fwd(eventWeight, vec_forward) );
+  ANA_CHECK(m_plots->RhoEtaHistFill_fwd(eventWeight, vec_forward) );
+  ANA_CHECK(m_plots->RhoEtaHistFill_combined(eventWeight,vec_central ,vec_forward) );
+  ANA_CHECK(m_plots->RhoEtaHistFill_combined_containers(eventWeight,vec_combined) );
   //ANA_CHECK(m_plots->RhoHistFill(eventWeight, vec_combined) ) ;
   //ANA_CHECK(m_plots->RhoEtaHistFill(eventWeight, vec_combined) ) ;
 
