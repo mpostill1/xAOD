@@ -23,6 +23,8 @@ namespace SlidingWindow
   std::vector<std::vector<double>> SlidingWindowExecute(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
   std::vector<std::vector<double>> SlidingWindowExecutetopo(const xAOD::JetContainer*  jetcont,const xAOD::CaloClusterContainer*  clustercont);
   std::vector<std::vector<double>> SlidingWindowExecuteBoth(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
+  std::vector<double>> SlidingWindowExecuteBothAverage(const xAOD::JetContainer*  jetcont,const xAOD::IParticleContainer*  clustercont);
+  std::vector<double>> myReturnVectoraverage;
   //std::vector<std::vector<double>> myReturnVector;
   fastjet::ClusterSequenceArea cs(std::vector<fastjet::PseudoJet> cpjets,fastjet::JetDefinition jdef,fastjet::AreaDefinition adef);
   //std::vector<fastjet::PseudoJet> cpjet;
